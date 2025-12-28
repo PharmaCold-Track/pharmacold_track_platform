@@ -1,6 +1,7 @@
 package com.pharmacoldtrack.platform.shipping.interfaces.rest.swagger;
 
 import com.pharmacoldtrack.platform.shipping.interfaces.rest.dto.request.CreateShipmentResource;
+import com.pharmacoldtrack.platform.shipping.interfaces.rest.dto.request.DeliveryShipmentResource;
 import com.pharmacoldtrack.platform.shipping.interfaces.rest.dto.request.UpdateShipmentResource;
 import com.pharmacoldtrack.platform.shipping.interfaces.rest.dto.response.ShipmentDetailResource;
 import com.pharmacoldtrack.platform.shipping.interfaces.rest.dto.response.ShipmentResource;
@@ -44,4 +45,24 @@ public interface ShipmentController {
             @Parameter(description = "Shipment ID") @PathVariable Long id,
             @RequestBody UpdateShipmentResource resource);
 
+    @Operation(summary = "Register Shipment Departure", description = "Changes status from CREATED to IN_TRANSIT.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Departure registered successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid status transition"),
+            @ApiResponse(responseCode = "404", description = "Shipment not found")
+    })
+    @PostMapping("/{id}/departure")
+    ResponseEntity<ShipmentResource> departure(@Parameter(description = "Shipment ID") @PathVariable Long id);
+
+    @Operation(summary = "Register Shipment Delivery", description = "Changes status from IN_TRANSIT to DELIVERED and records signature.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Delivery registered successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid status transition"),
+            @ApiResponse(responseCode = "404", description = "Shipment not found")
+    })
+    @PostMapping("/{id}/delivery")
+    ResponseEntity<ShipmentResource> delivery(
+            @Parameter(description = "Shipment ID") @PathVariable Long id,
+            @RequestBody DeliveryShipmentResource resource
+    );
 }

@@ -45,6 +45,10 @@ public class Shipment extends AuditableAbstractAggregateRoot<Shipment> {
     @Column(nullable = false)
     private String contactEmail;
 
+    private String recipientSignature;
+    private String deliveryNotes;
+    private LocalDateTime deliveryDate;
+
     public Shipment(String description, String origin, String destination,
                     Double minTemperature, Double maxTemperature,
                     String contactEmail, LocalDateTime estimatedArrival) {
@@ -78,5 +82,22 @@ public class Shipment extends AuditableAbstractAggregateRoot<Shipment> {
         this.destination = destination;
         this.minTemperature = minTemperature;
         this.maxTemperature = maxTemperature;
+    }
+
+    public void departure() {
+        if (this.status != ShipmentStatus.CREATED) {
+            throw new IllegalStateException("Shipment implies departure only from CREATED status");
+        }
+        this.status = ShipmentStatus.IN_TRANSIT;
+    }
+
+    public void delivery(String recipientSignature, String notes) {
+        if (this.status != ShipmentStatus.IN_TRANSIT) {
+            throw new IllegalStateException("Shipment implies delivery only from IN_TRANSIT status");
+        }
+        this.status = ShipmentStatus.DELIVERED;
+        this.recipientSignature = recipientSignature;
+        this.deliveryNotes = notes;
+        this.deliveryDate = LocalDateTime.now();
     }
 }

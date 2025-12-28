@@ -2,6 +2,8 @@ package com.pharmacoldtrack.platform.shipping.domain.services;
 
 import com.pharmacoldtrack.platform.shipping.domain.model.aggregates.Shipment;
 import com.pharmacoldtrack.platform.shipping.domain.model.commands.CreateShipmentCommand;
+import com.pharmacoldtrack.platform.shipping.domain.model.commands.DeliveryShipmentCommand;
+import com.pharmacoldtrack.platform.shipping.domain.model.commands.DepartureShipmentCommand;
 import com.pharmacoldtrack.platform.shipping.domain.model.commands.UpdateShipmentCommand;
 
 import java.util.Optional;
@@ -9,4 +11,6 @@ import java.util.Optional;
 public interface ShipmentCommandService {
     Optional<Shipment> handle(CreateShipmentCommand command);
     Optional<Shipment> handle(UpdateShipmentCommand command);
+    Optional<Shipment> handle(DepartureShipmentCommand command);
+    Optional<Shipment> handle(DeliveryShipmentCommand command);
 }
