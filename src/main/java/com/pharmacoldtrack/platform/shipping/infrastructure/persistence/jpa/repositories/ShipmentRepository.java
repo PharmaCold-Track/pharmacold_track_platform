@@ -1,4 +1,4 @@
-package com.pharmacoldtrack.platform.shipping.domain.persistence;
+package com.pharmacoldtrack.platform.shipping.infrastructure.persistence.jpa.repositories;
 
 import com.pharmacoldtrack.platform.shipping.domain.model.aggregates.Shipment;
 import org.springframework.data.jpa.repository.JpaRepository;

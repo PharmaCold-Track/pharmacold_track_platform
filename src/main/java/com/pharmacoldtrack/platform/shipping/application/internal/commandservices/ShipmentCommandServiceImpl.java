@@ -2,7 +2,7 @@ package com.pharmacoldtrack.platform.shipping.application.internal.commandservic
 
 import com.pharmacoldtrack.platform.shipping.domain.model.aggregates.Shipment;
 import com.pharmacoldtrack.platform.shipping.domain.model.commands.CreateShipmentCommand;
-import com.pharmacoldtrack.platform.shipping.domain.persistence.ShipmentRepository;
+import com.pharmacoldtrack.platform.shipping.infrastructure.persistence.jpa.repositories.ShipmentRepository;
 import com.pharmacoldtrack.platform.shipping.domain.services.ShipmentCommandService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
