@@ -2,7 +2,9 @@ package com.pharmacoldtrack.platform.shipping.interfaces.rest.controllers;
 
 import com.pharmacoldtrack.platform.shipping.domain.model.commands.CancelShipmentCommand;
 import com.pharmacoldtrack.platform.shipping.domain.model.commands.DepartureShipmentCommand;
+import com.pharmacoldtrack.platform.shipping.domain.model.queries.GetAllShipmentsByFilterQuery;
 import com.pharmacoldtrack.platform.shipping.domain.model.queries.GetShipmentByIdQuery;
+import com.pharmacoldtrack.platform.shipping.domain.model.valueobjects.ShipmentStatus;
 import com.pharmacoldtrack.platform.shipping.domain.services.ShipmentCommandService;
 import com.pharmacoldtrack.platform.shipping.domain.services.ShipmentQueryService;
 import com.pharmacoldtrack.platform.shipping.interfaces.rest.dto.request.CreateShipmentResource;
@@ -16,6 +18,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -87,5 +93,18 @@ public class ShipmentControllerImpl implements ShipmentController {
         if (shipment.isEmpty()) return ResponseEntity.notFound().build();
 
         return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity<List<ShipmentResource>> getAllShipments(ShipmentStatus status, LocalDateTime fromDate) {
+        var query = new GetAllShipmentsByFilterQuery(Optional.ofNullable(status), Optional.ofNullable(fromDate));
+
+        var shipments = shipmentQueryService.handle(query);
+
+        var resources = shipments.stream()
+                .map(ShipmentResourceFromEntityAssembler::toResourceFromEntity)
+                .toList();
+
+        return ResponseEntity.ok(resources);
     }
 }
