@@ -63,4 +63,20 @@ public class Shipment extends AuditableAbstractAggregateRoot<Shipment> {
         this.contactEmail = contactEmail;
         this.estimatedArrival = estimatedArrival;
     }
+
+    public void update(String description, String origin, String destination, Double minTemperature, Double maxTemperature) {
+        if (this.status != ShipmentStatus.CREATED) {
+            throw new IllegalStateException("Shipment can only be updated when status is CREATED");
+        }
+
+        if (minTemperature >= maxTemperature) {
+            throw new IllegalArgumentException("Minimum temperature must be less than maximum temperature");
+        }
+
+        this.description = description;
+        this.origin = origin;
+        this.destination = destination;
+        this.minTemperature = minTemperature;
+        this.maxTemperature = maxTemperature;
+    }
 }
