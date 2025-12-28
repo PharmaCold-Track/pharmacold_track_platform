@@ -1,16 +1,16 @@
 package com.pharmacoldtrack.platform.shipping.interfaces.rest.swagger;
 
 import com.pharmacoldtrack.platform.shipping.interfaces.rest.dto.request.CreateShipmentResource;
+import com.pharmacoldtrack.platform.shipping.interfaces.rest.dto.response.ShipmentDetailResource;
 import com.pharmacoldtrack.platform.shipping.interfaces.rest.dto.response.ShipmentResource;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Shipping", description = "Shipment Management Endpoints")
 @RequestMapping(value = "/shipments", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -23,4 +23,12 @@ public interface ShipmentController {
     })
     @PostMapping
     ResponseEntity<ShipmentResource> createShipment(@RequestBody CreateShipmentResource resource);
+
+    @Operation(summary = "Get Shipment Details", description = "Retrieves shipment details including telemetry history.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Shipment found"),
+            @ApiResponse(responseCode = "404", description = "Shipment not found")
+    })
+    @GetMapping("/{id}")
+    ResponseEntity<ShipmentDetailResource> getShipmentById(@Parameter(description = "Shipment ID") @PathVariable Long id);
 }
