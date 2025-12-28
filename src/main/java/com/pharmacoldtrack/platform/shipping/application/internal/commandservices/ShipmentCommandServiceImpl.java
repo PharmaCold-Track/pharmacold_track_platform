@@ -41,6 +41,8 @@ public class ShipmentCommandServiceImpl implements ShipmentCommandService {
         try {
             shipment.update(
                     command.description(),
+                    command.origin(),
+                    command.destination(),
                     command.minTemperature(),
                     command.maxTemperature()
             );

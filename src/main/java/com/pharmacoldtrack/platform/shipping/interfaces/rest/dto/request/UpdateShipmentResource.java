@@ -1,7 +1,6 @@
-package com.pharmacoldtrack.platform.shipping.domain.model.commands;
+package com.pharmacoldtrack.platform.shipping.interfaces.rest.dto.request;
 
-public record UpdateShipmentCommand(
-        Long id,
+public record UpdateShipmentResource(
         String description,
         String origin,
         String destination,

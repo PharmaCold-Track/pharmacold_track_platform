@@ -1,6 +1,7 @@
 package com.pharmacoldtrack.platform.shipping.interfaces.rest.swagger;
 
 import com.pharmacoldtrack.platform.shipping.interfaces.rest.dto.request.CreateShipmentResource;
+import com.pharmacoldtrack.platform.shipping.interfaces.rest.dto.request.UpdateShipmentResource;
 import com.pharmacoldtrack.platform.shipping.interfaces.rest.dto.response.ShipmentDetailResource;
 import com.pharmacoldtrack.platform.shipping.interfaces.rest.dto.response.ShipmentResource;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,4 +32,16 @@ public interface ShipmentController {
     })
     @GetMapping("/{id}")
     ResponseEntity<ShipmentDetailResource> getShipmentById(@Parameter(description = "Shipment ID") @PathVariable Long id);
+
+    @Operation(summary = "Update Shipment", description = "Updates shipment details only if status is CREATED.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Shipment updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid status or data"),
+            @ApiResponse(responseCode = "404", description = "Shipment not found")
+    })
+    @PutMapping("/{id}")
+    ResponseEntity<ShipmentResource> updateShipment(
+            @Parameter(description = "Shipment ID") @PathVariable Long id,
+            @RequestBody UpdateShipmentResource resource);
+
 }

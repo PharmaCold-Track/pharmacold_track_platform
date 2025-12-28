@@ -64,7 +64,7 @@ public class Shipment extends AuditableAbstractAggregateRoot<Shipment> {
         this.estimatedArrival = estimatedArrival;
     }
 
-    public void update(String description, Double minTemperature, Double maxTemperature) {
+    public void update(String description, String origin, String destination, Double minTemperature, Double maxTemperature) {
         if (this.status != ShipmentStatus.CREATED) {
             throw new IllegalStateException("Shipment can only be updated when status is CREATED");
         }
@@ -74,6 +74,8 @@ public class Shipment extends AuditableAbstractAggregateRoot<Shipment> {
         }
 
         this.description = description;
+        this.origin = origin;
+        this.destination = destination;
         this.minTemperature = minTemperature;
         this.maxTemperature = maxTemperature;
     }
