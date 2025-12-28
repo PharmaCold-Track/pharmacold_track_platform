@@ -5,7 +5,7 @@ import java.util.List;
 public record ShipmentDetailResource(
         Long id,
         String status,
-        List<Double> telemetryHistory,
+        List<ShipmentTelemetryResource> telemetry,
         Double currentTemp
 ) {
 }
