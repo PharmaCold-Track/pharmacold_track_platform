@@ -1,5 +1,6 @@
 package com.pharmacoldtrack.platform.shipping.interfaces.rest.swagger;
 
+import com.pharmacoldtrack.platform.shipping.domain.model.valueobjects.ShipmentStatus;
 import com.pharmacoldtrack.platform.shipping.interfaces.rest.dto.request.CreateShipmentResource;
 import com.pharmacoldtrack.platform.shipping.interfaces.rest.dto.request.DeliveryShipmentResource;
 import com.pharmacoldtrack.platform.shipping.interfaces.rest.dto.request.UpdateShipmentResource;
@@ -10,9 +11,13 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Tag(name = "Shipping", description = "Shipment Management Endpoints")
 @RequestMapping(value = "/shipments", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -74,4 +79,15 @@ public interface ShipmentController {
     })
     @DeleteMapping("/{id}")
     ResponseEntity<Void> cancelShipment(@Parameter(description = "Shipment ID") @PathVariable Long id);
+
+    @Operation(summary = "List Shipments", description = "Get all shipments with optional filtering by status and creation date.")
+    @GetMapping
+    ResponseEntity<List<ShipmentResource>> getAllShipments(
+            @Parameter(description = "Filter by Status (e.g. IN_TRANSIT)")
+            @RequestParam(required = false) ShipmentStatus status,
+
+            @Parameter(description = "Filter shipments created after date (ISO format)")
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fromDate
+    );
+
 }
