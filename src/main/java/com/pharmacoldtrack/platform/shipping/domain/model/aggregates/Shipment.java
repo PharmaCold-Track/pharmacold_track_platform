@@ -107,4 +107,11 @@ public class Shipment extends AuditableAbstractAggregateRoot<Shipment> {
         }
         this.status = ShipmentStatus.CANCELLED;
     }
+
+    public void compromise(String reason) {
+        if (this.status == ShipmentStatus.IN_TRANSIT || this.status == ShipmentStatus.CREATED) {
+            this.status = ShipmentStatus.COMPROMISED;
+            this.description = this.description + " [COMPROMISED: " + reason + "]";
+        }
+    }
 }
