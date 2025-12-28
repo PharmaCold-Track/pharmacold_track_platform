@@ -100,4 +100,11 @@ public class Shipment extends AuditableAbstractAggregateRoot<Shipment> {
         this.deliveryNotes = notes;
         this.deliveryDate = LocalDateTime.now();
     }
+
+    public void cancel() {
+        if (this.status != ShipmentStatus.CREATED) {
+            throw new IllegalStateException("Only CREATED shipments can be cancelled");
+        }
+        this.status = ShipmentStatus.CANCELLED;
+    }
 }

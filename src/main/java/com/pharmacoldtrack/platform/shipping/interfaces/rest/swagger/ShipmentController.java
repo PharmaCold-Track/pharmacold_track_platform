@@ -65,4 +65,13 @@ public interface ShipmentController {
             @Parameter(description = "Shipment ID") @PathVariable Long id,
             @RequestBody DeliveryShipmentResource resource
     );
+
+    @Operation(summary = "Cancel Shipment", description = "Cancels a shipment if it is still in CREATED status.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Shipment cancelled successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid status for cancellation"),
+            @ApiResponse(responseCode = "404", description = "Shipment not found")
+    })
+    @DeleteMapping("/{id}")
+    ResponseEntity<Void> cancelShipment(@Parameter(description = "Shipment ID") @PathVariable Long id);
 }

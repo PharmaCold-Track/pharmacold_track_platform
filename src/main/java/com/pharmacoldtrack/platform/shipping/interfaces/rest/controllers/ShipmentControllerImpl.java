@@ -1,5 +1,6 @@
 package com.pharmacoldtrack.platform.shipping.interfaces.rest.controllers;
 
+import com.pharmacoldtrack.platform.shipping.domain.model.commands.CancelShipmentCommand;
 import com.pharmacoldtrack.platform.shipping.domain.model.commands.DepartureShipmentCommand;
 import com.pharmacoldtrack.platform.shipping.domain.model.queries.GetShipmentByIdQuery;
 import com.pharmacoldtrack.platform.shipping.domain.services.ShipmentCommandService;
@@ -76,5 +77,15 @@ public class ShipmentControllerImpl implements ShipmentController {
 
         var resource = ShipmentResourceFromEntityAssembler.toResourceFromEntity(shipment.get());
         return ResponseEntity.ok(resource);
+    }
+
+    @Override
+    public ResponseEntity<Void> cancelShipment(Long id) {
+        var command = new CancelShipmentCommand(id);
+        var shipment = shipmentCommandService.handle(command);
+
+        if (shipment.isEmpty()) return ResponseEntity.notFound().build();
+
+        return ResponseEntity.noContent().build();
     }
 }
