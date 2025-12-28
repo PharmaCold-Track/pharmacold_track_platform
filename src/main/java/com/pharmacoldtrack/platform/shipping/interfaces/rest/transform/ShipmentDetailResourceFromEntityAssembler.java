@@ -3,6 +3,7 @@ package com.pharmacoldtrack.platform.shipping.interfaces.rest.transform;
 import com.pharmacoldtrack.platform.containermonitoring.domain.model.aggregates.TelemetryData;
 import com.pharmacoldtrack.platform.shipping.domain.model.valueobjects.ShipmentDetail;
 import com.pharmacoldtrack.platform.shipping.interfaces.rest.dto.response.ShipmentDetailResource;
+import com.pharmacoldtrack.platform.shipping.interfaces.rest.dto.response.ShipmentTelemetryResource;
 
 import java.util.Comparator;
 import java.util.List;
@@ -13,9 +14,14 @@ public class ShipmentDetailResourceFromEntityAssembler {
         var shipment = detail.shipment();
         var telemetryList = detail.telemetry();
 
-        List<Double> temperatureHistory = telemetryList.stream()
+        List<ShipmentTelemetryResource> telemetryResources = telemetryList.stream()
                 .sorted(Comparator.comparing(TelemetryData::getMeasuredAt))
-                .map(TelemetryData::getTemperature)
+                .map(t -> new ShipmentTelemetryResource(
+                        t.getLatitude(),
+                        t.getLongitude(),
+                        t.getTemperature(),
+                        t.getMeasuredAt()
+                ))
                 .toList();
 
         Double currentTemp = telemetryList.stream()
@@ -26,7 +32,7 @@ public class ShipmentDetailResourceFromEntityAssembler {
         return new ShipmentDetailResource(
                 shipment.getId(),
                 shipment.getStatus().name(),
-                temperatureHistory,
+                telemetryResources,
                 currentTemp
         );
     }
