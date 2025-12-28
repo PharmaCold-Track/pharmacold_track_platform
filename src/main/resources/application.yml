@@ -8,7 +8,7 @@ spring:
     name: pharmacold-track
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/pharmacold_db
+    url: jdbc:postgresql://localhost:5440/pharmacold_db
     username: postgres
     password: password
     driver-class-name: org.postgresql.Driver
@@ -26,6 +26,7 @@ spring:
       path: /api-docs
     swagger-ui:
       path: /swagger-ui.html
+      operations-sorter: method
 
 authorization:
   jwt:
