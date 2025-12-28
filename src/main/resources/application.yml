@@ -1,0 +1,33 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+
+spring:
+  application:
+    name: pharmacold-track
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/pharmacold_db
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        physical_naming_strategy: com.pharmacold.track.shared.infrastructure.persistence.jpa.configuration.strategy.SnakeCaseWithPluralizedTablePhysicalNamingStrategy
+    show-sql: true
+
+  springdoc:
+    api-docs:
+      path: /api-docs
+    swagger-ui:
+      path: /swagger-ui.html
+
+authorization:
+  jwt:
+    secret: "PharmaCold_Secret_Key_For_JWT_Signing_Must_Be_Secure_2025_And_Very_Long"
+    expiration: 86400
