@@ -1,10 +1,7 @@
 package com.pharmacoldtrack.platform.shipping.application.internal.commandservices;
 
 import com.pharmacoldtrack.platform.shipping.domain.model.aggregates.Shipment;
-import com.pharmacoldtrack.platform.shipping.domain.model.commands.CreateShipmentCommand;
-import com.pharmacoldtrack.platform.shipping.domain.model.commands.DeliveryShipmentCommand;
-import com.pharmacoldtrack.platform.shipping.domain.model.commands.DepartureShipmentCommand;
-import com.pharmacoldtrack.platform.shipping.domain.model.commands.UpdateShipmentCommand;
+import com.pharmacoldtrack.platform.shipping.domain.model.commands.*;
 import com.pharmacoldtrack.platform.shipping.infrastructure.persistence.jpa.repositories.ShipmentRepository;
 import com.pharmacoldtrack.platform.shipping.domain.services.ShipmentCommandService;
 import lombok.RequiredArgsConstructor;
@@ -78,6 +75,21 @@ public class ShipmentCommandServiceImpl implements ShipmentCommandService {
         var shipment = shipmentOptional.get();
         try {
             shipment.delivery(command.recipientSignature(), command.notes());
+            shipmentRepository.save(shipment);
+            return Optional.of(shipment);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+    }
+
+    @Override
+    public Optional<Shipment> handle(CancelShipmentCommand command) {
+        var shipmentOptional = shipmentRepository.findById(command.id());
+        if (shipmentOptional.isEmpty()) return Optional.empty();
+
+        var shipment = shipmentOptional.get();
+        try {
+            shipment.cancel();
             shipmentRepository.save(shipment);
             return Optional.of(shipment);
         } catch (Exception e) {
