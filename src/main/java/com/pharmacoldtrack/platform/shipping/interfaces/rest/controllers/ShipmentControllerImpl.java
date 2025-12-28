@@ -36,11 +36,11 @@ public class ShipmentControllerImpl implements ShipmentController {
     @Override
     public ResponseEntity<ShipmentDetailResource> getShipmentById(Long id) {
         var query = new GetShipmentByIdQuery(id);
-        var shipment = shipmentQueryService.handle(query);
+        var shipmentDetail = shipmentQueryService.handle(query);
 
-        if (shipment.isEmpty()) return ResponseEntity.notFound().build();
+        if (shipmentDetail.isEmpty()) return ResponseEntity.notFound().build();
 
-        var resource = ShipmentDetailResourceFromEntityAssembler.toResourceFromEntity(shipment.get());
+        var resource = ShipmentDetailResourceFromEntityAssembler.toResourceFromEntity(shipmentDetail.get());
         return ResponseEntity.ok(resource);
     }
 }
