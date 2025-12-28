@@ -2,6 +2,8 @@ package com.pharmacoldtrack.platform.shipping.application.internal.commandservic
 
 import com.pharmacoldtrack.platform.shipping.domain.model.aggregates.Shipment;
 import com.pharmacoldtrack.platform.shipping.domain.model.commands.CreateShipmentCommand;
+import com.pharmacoldtrack.platform.shipping.domain.model.commands.DeliveryShipmentCommand;
+import com.pharmacoldtrack.platform.shipping.domain.model.commands.DepartureShipmentCommand;
 import com.pharmacoldtrack.platform.shipping.domain.model.commands.UpdateShipmentCommand;
 import com.pharmacoldtrack.platform.shipping.infrastructure.persistence.jpa.repositories.ShipmentRepository;
 import com.pharmacoldtrack.platform.shipping.domain.services.ShipmentCommandService;
@@ -46,6 +48,36 @@ public class ShipmentCommandServiceImpl implements ShipmentCommandService {
                     command.minTemperature(),
                     command.maxTemperature()
             );
+            shipmentRepository.save(shipment);
+            return Optional.of(shipment);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+    }
+
+    @Override
+    public Optional<Shipment> handle(DepartureShipmentCommand command) {
+        var shipmentOptional = shipmentRepository.findById(command.id());
+        if (shipmentOptional.isEmpty()) return Optional.empty();
+
+        var shipment = shipmentOptional.get();
+        try {
+            shipment.departure();
+            shipmentRepository.save(shipment);
+            return Optional.of(shipment);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+    }
+
+    @Override
+    public Optional<Shipment> handle(DeliveryShipmentCommand command) {
+        var shipmentOptional = shipmentRepository.findById(command.id());
+        if (shipmentOptional.isEmpty()) return Optional.empty();
+
+        var shipment = shipmentOptional.get();
+        try {
+            shipment.delivery(command.recipientSignature(), command.notes());
             shipmentRepository.save(shipment);
             return Optional.of(shipment);
         } catch (Exception e) {
