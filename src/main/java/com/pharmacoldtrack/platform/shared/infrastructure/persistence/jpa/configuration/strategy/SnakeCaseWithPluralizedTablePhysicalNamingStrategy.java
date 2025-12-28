@@ -7,10 +7,6 @@ import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
 import static com.pharmacoldtrack.platform.shared.domain.utils.StringUtils.toSnakeCase;
 import static com.pharmacoldtrack.platform.shared.domain.utils.StringUtils.pluralize;
 
-/**
- * Estrategia de nombrado para convertir Entidades (PascalCase) a tablas (snake_case + plural).
- * Ejemplo: User -> users, TelemetryRecord -> telemetry_records
- */
 public class SnakeCaseWithPluralizedTablePhysicalNamingStrategy extends PhysicalNamingStrategyStandardImpl {
 
     @Override
