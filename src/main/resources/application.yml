@@ -28,6 +28,18 @@ spring:
       path: /swagger-ui.html
       operations-sorter: method
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: elmeraugustoriva@gmail.com
+    password: zoel qhvw sbpk wkee
+    properties:
+        mail:
+            smtp:
+            auth: true
+            starttls:
+                enable: true
+
 authorization:
   jwt:
     secret: "PharmaCold_Secret_Key_For_JWT_Signing_Must_Be_Secure_2025_And_Very_Long"
